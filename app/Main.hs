@@ -1,15 +1,13 @@
 module Main where
 
 import Data.List.Split
+import System.Environment (getArgs)
 
 -- (Question, Answer)
 type Card = (String, String)
 
 nCards :: Int
 nCards = 5
-
-questionsFile :: FilePath
-questionsFile = "/home/lsund/Documents/work/notes/kafka.md"
 
 fileContentToCards :: String -> [Card]
 fileContentToCards =
@@ -28,6 +26,7 @@ userQuery (question, answer) = do
 
 main :: IO ()
 main = do
-  x <-
-    readFile questionsFile >>= \cont -> mapM userQuery $ fileContentToCards cont
-  print x
+  score <-
+    fmap head getArgs >>= readFile >>= \cont ->
+      mapM userQuery $ fileContentToCards cont
+  print score
